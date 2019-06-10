@@ -26,14 +26,10 @@
       </div>
       <div data-key="71" class="key">
         <kbd>G</kbd>
-        <span class="sound">clap</span>
+        <span class="sound">boom</span>
       </div>
       <div data-key="72" class="key">
         <kbd>H</kbd>
-        <span class="sound">boom</span>
-      </div>
-      <div data-key="73" class="key">
-        <kbd></kbd>
         <span class="sound">ride</span>
       </div>
       <div data-key="74" class="key">
@@ -60,24 +56,23 @@
     </div>
 
     <script>
-      window.addEventListener("keydown", e => {
+      playSound = e => {
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
         const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
         if (!audio) return; // avoid function from running all together
         audio.currentTime = 0; //rewind to start
         audio.play();
         key.classList.add("playing");
-        key.classList.remove("playing");
-        key.classList.toggle("playing");
-        console.log(key);
-      });
-      removeTransition = e => {
-        console.log(e);
       };
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return; // if not  a transform
+        this.classList.remove("playing");
+      }
       const keys = document.querySelectorAll(".key");
       keys.forEach(key =>
         key.addEventListener("transitionend", removeTransition)
       );
+      window.addEventListener("keydown", playSound);
     </script>
   </body>
 </html>
